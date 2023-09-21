@@ -29,11 +29,6 @@
     |=  [=mark =vase]
     ^-  (quip card _this)
     ?+    mark  (on-poke:def mark vase)
-        ::  TODO handle unsub
-        %pongo-unsub
-      ?+  q.vase  (on-poke:def mark vase)
-        [%unsubscribe ~]  `this
-      ==
     ::
         %fleet-command
       ?>  =(our src):bowl
@@ -121,13 +116,7 @@
       [%x %default-heartbeat ~]  ``noun+!>(default-heartbeat)
     ==
   ::
-  ++  on-agent
-    |=  [=wire =sign:agent:gall]
-    ^-  (quip card _this)
-    ?+  wire  (on-agent:def wire sign)
-      [%pongo ~]  `this
-    ==
-  ::
+  ++  on-agent  on-agent:def
   ++  on-fail   on-fail:def
   --
 =|  cards=(list card)
@@ -147,7 +136,6 @@
         state
       =/  old=(set ship)  fleet
       =.  fleet  (sponsored-ships spon)
-      =.  fleet  (silt ~[~zod ~nec])
       =.  last-kids-update  now.bowl
       state
   ++  del-ships
@@ -212,7 +200,7 @@
     =/  msg=cord  %-  crip
       =/  time=tape  ?~(last "unknown" <`@dr`(sub now.bowl u.last)>)
       "{<ship>} has not been contacted by {<our.bowl>} in {time}."
-    (send-pongo ship msg)
+    (send-talk ship msg)
   ::
   ++  handle-revived
     |=  =ship
@@ -222,7 +210,7 @@
     =/  msg=cord  %-  crip
       =/  time=tape  ?~(old "unknown" <`@dr`(sub now.bowl u.old)>)
       "{<ship>} has contacted {<our.bowl>}. Downtime: {time}"
-    (send-pongo ship msg)
+    (send-talk ship msg)
   ::
   ++  is-down
     |=  [=ship last=(unit @da)]
@@ -255,7 +243,7 @@
   =/  key=(unit @da)  `key:(snag max-log-size (tap:log-orm logs))
   cor(logs (lot:log-orm logs ~ key))
 ::
-++  send-pongo
+++  send-talk
   |=  [kid=ship msg=cord]
   |^  ^+  cor
       =.  cor  (add-to-log kid msg)
@@ -274,7 +262,6 @@
         [%story `~[msg]]
       ==
       [%pass /chat %agent [our.bowl %chat] %poke %dm-action !>(action)]
-      :: [%pass /pongo %agent [ship %pongo] %poke cage]
   ::
   ::
   ++  add-to-log
