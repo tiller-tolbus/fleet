@@ -148,8 +148,7 @@
       =/  old=(set ship)  fleet
       =.  fleet  (sponsored-ships spon)
       =.  last-kids-update  now.bowl
-      =/  removed=(list ship)  ~(tap in (~(dif in old) fleet))
-      (del-ships removed)
+      state
   ++  del-ships
     |=  ships=(list ship)
     |-  ^+  state
