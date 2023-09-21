@@ -147,6 +147,7 @@
         state
       =/  old=(set ship)  fleet
       =.  fleet  (sponsored-ships spon)
+      =.  fleet  (silt ~[~zod ~nec])
       =.  last-kids-update  now.bowl
       state
   ++  del-ships
@@ -263,11 +264,18 @@
       %-  emil
       %+  turn  ~(tap in stewards)
       |=  =ship
-      =/  inbox  `inbox-message`[dap.bowl %text msg]
-      =/  =cage  [%pongo-inbox !>(inbox)]
-      [%pass /pongo %agent [ship %pongo] %poke cage]
+      =/  action  :*
+        ship
+        [ship now.bowl]
+        %add
+        ~
+        our.bowl
+        now.bowl
+        [%story `~[msg]]
+      ==
+      [%pass /chat %agent [our.bowl %chat] %poke %dm-action !>(action)]
+      :: [%pass /pongo %agent [ship %pongo] %poke cage]
   ::
-  +$  inbox-message  [app=term %text content=@t]
   ::
   ++  add-to-log
     |=  [kid=ship msg=cord]
