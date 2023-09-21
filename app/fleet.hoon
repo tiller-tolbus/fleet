@@ -36,6 +36,8 @@
       ?-  -.cmd
         %add-steward  `this(stewards (~(put in stewards) ship.cmd))
         %del-steward  `this(stewards (~(del in stewards) ship.cmd))
+        %add-ship     `this(fleet (~(put in fleet) ship.cmd))
+        %del-ship     `this(fleet (~(del in fleet) ship.cmd))
         %set-send-alerts  `this(send-alerts flag.cmd)
         %set-default-heartbeat  `this(default-heartbeat t.cmd)
       ::

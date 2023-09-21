@@ -29,6 +29,8 @@
 +$  command
   $%  [%add-steward =ship]             ::  who to notify
       [%del-steward =ship]             ::  who to notify
+      [%add-ship =ship]                ::  ship to monitor
+      [%del-ship =ship]                ::  ship to monitor
       [%set-heartbeat =ship t=@dr]     ::  custom last-contact threshold
       [%set-default-heartbeat t=@dr]   ::  default notify threshold
       [%set-run-interval t=@dr]        ::  how often to run %fleet
