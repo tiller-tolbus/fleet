@@ -193,6 +193,8 @@
       ::  downed
       =?  cor  &(down !(~(has by downed) i.ships))
         (handle-downed i.ships last)
+      =?  cor  !(pumping i.ships)
+        (send-ping i.ships)
       $(ships t.ships)
   ::
   ++  handle-downed
@@ -229,6 +231,31 @@
     ^-  (unit @da)
     =+  [our=(scot %p our.bowl) now=(scot %da now.bowl) who=(scot %p ship)]
     .^((unit @da) %ax /[our]//[now]/peers/[who]/last-contact)
+  ++  pumping
+    |=  =ship
+    ^-  ?
+    ?.  (~(has in peers) ship)
+      %|
+    =+  [our=(scot %p our.bowl) now=(scot %da now.bowl) ship=(scot %p ship)]
+    =+  .^(=ship-state:ames %ax /[our]//[now]/peers/[ship])
+    ?:  ?=([%known *] ship-state)
+      %-  ~(any by snd.ship-state)
+      |=  m=message-pump-state:ames
+      !=(~ next-wake.packet-pump-state.m)
+    ?>  ?=([%alien *] ship-state)
+    ?~(messages.ship-state %| %&)
+  ::
+  ++  peers  ~+
+    ^-  (set ship)
+    =+  [our=(scot %p our.bowl) now=(scot %da now.bowl)]
+    %~  key  by
+    .^((map ship ?(%alien %known)) %ax /[our]//[now]/peers)
+  ++  send-ping
+    |=  =ship
+    ^+  cor
+    ?:  =(ship our.bowl)  cor
+    %-  emit
+    [%pass /ping/(scot %da now.bowl) %agent [ship %ping] %poke noun+!>(~)]
   --
 ::
 ++  log-orm  ((on @da log-entry) gth)
